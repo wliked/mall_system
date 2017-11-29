@@ -8,6 +8,14 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 const portfinder = require('portfinder')
 
+// mock data
+const express = require('express')
+const app = express()
+var router = express.Router();
+var goodsData = require('./../mock/goods.json');
+
+// mock data end
+
 const devWebpackConfig = merge(baseWebpackConfig, {
   module: {
     rules: utils.styleLoaders({ sourceMap: config.dev.cssSourceMap, usePostCSS: true })
@@ -17,6 +25,12 @@ const devWebpackConfig = merge(baseWebpackConfig, {
 
   // these devServer options should be customized in /config/index.js
   devServer: {
+    before(app) {
+      router.get('/goods', (req, res, next)=>{
+        res.json(goodsData);
+      });
+      app.use(router);
+    },
     clientLogLevel: 'warning',
     historyApiFallback: true,
     hot: true,
