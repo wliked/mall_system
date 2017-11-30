@@ -92,10 +92,14 @@
     },
     methods: {
       getGoodsList(){
-        axios.get("/goods").then((result)=>{
-          var res = result.data;
-          this.goodsList = res.result;
-        })
+        axios.get("/goods").then((response)=> {
+          let res = response.data;
+          if (res.status == '0') {
+            this.goodsList = res.result.list;
+          } else {
+            this.goodsList = [];
+          }
+        });
       },
       showFilterPop(){
         this.filterBy=true;
