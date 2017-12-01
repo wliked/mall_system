@@ -29,15 +29,25 @@
           </div>
         </div>
       </div>
+
     </header>
 </template>
 
 <script>
+    import './../assets/css/login.css'
+    import axios from 'axios'
     export default{
         data(){
             return{
-                msg:''
+                userName: '',
+                userPwd: '',
+                errorTip: false,
             }
         },
+        methods:{
+            login() {
+
+            }
+        }
     }
 </script>

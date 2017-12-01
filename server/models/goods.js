@@ -9,7 +9,8 @@ var productSchema = new Schema({
     "productName": String,
     "salePrice": Number,
     "productImage": String,
-
+    "productNum": Number,
+    "checked":Number,
 });
 
 module.exports = mongoose.model('Good', productSchema);
