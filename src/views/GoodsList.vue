@@ -4,6 +4,10 @@
     <nav-bread>
       <span>Goods</span>
     </nav-bread>
+    <symbol id="icon-arrow-short" viewBox="0 0 25 32">
+        <title>arrow-short</title>
+        <path class="path1" d="M24.487 18.922l-1.948-1.948-8.904 8.904v-25.878h-2.783v25.878l-8.904-8.904-1.948 1.948 12.243 12.243z"></path>
+    </symbol>
     <div class="accessory-result-page accessory-page">
     <div class="container">
     <div class="filter-nav">
@@ -11,7 +15,7 @@
       <a href="javascript:void(0)" class="default cur">Default</a>
       <a @click="sortGoods" herf="javascript:;">
         Price
-        <svg class="icon icon-arrow-short">
+        <svg class="icon icon-arrow-short" :class="{'sort-up':sortFlag}">
           <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-arrow-short"></use>
         </svg>
       </a>
@@ -65,13 +69,24 @@
     line-height: 100px;
     text-align: center;
   }
-
+  .sort-up {
+    transform: rotate(180deg);
+    transition:all .3s ease-out;
+  }
+  .icon-arrow-short {
+    transition: all .3s ease-out;
+  }
+  .btn.btn--m:hover {
+    background-color: #ffe5e6;
+    transition: all .3s ease-out;
+  }
 
 </style>
 
 <script>
   import './../assets/css/base.css'
   import './../assets/css/product.css'
+  import
   import NavHeader from '@/components/NavHeader'
   import NavFooter from '@/components/NavFooter'
   import NavBread from '@/components/NavBread'
