@@ -86,7 +86,7 @@
 <script>
   import './../assets/css/base.css'
   import './../assets/css/product.css'
-  import
+  import './../assets/css/login.css'
   import NavHeader from '@/components/NavHeader'
   import NavFooter from '@/components/NavFooter'
   import NavBread from '@/components/NavBread'
