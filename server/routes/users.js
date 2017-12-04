@@ -123,4 +123,29 @@ router.post("/cartDel", function (req,res, next) {
   });
 });
 
+
+//购物车数量修改
+router.post("/cartEdit", function (req,res,next) {
+  let userId= req.cookies.userId,
+      productId=req.body.productId,
+      productNum = req.body.productNum;
+
+  User.update({"userId":userId,"cartList.productId":productId}, {
+    "cartList.$.productNum":productNum
+  }, function (err, doc) {
+     if (err) {
+       res.json({
+         status: '1',
+         msg: err.message,
+         result:''
+       });
+     }else{
+       res.json({
+         status: '0',
+         msg: '',
+         result:'suc'
+       });
+     }
+  })
+})
 module.exports = router;
