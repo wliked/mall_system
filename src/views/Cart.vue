@@ -76,7 +76,7 @@
                       </div>
                     </div>
                     <div class="cart-tab-2">
-                      <div class="item-price">{{item.salePrice}}</div>
+                      <div class="item-price">{{item.salePrice | currency('$')}}</div>
                     </div>
                     <div class="cart-tab-3">
                       <div class="item-quantity">
@@ -90,7 +90,7 @@
                       </div>
                     </div>
                     <div class="cart-tab-4">
-                      <div class="item-price-total">{{item.productNum*item.salePrice}}</div>
+                      <div class="item-price-total">{{item.productNum*item.salePrice | currency('$')}}</div>
                     </div>
                     <div class="cart-tab-5">
                       <div class="cart-item-opration">
@@ -109,8 +109,8 @@
               <div class="cart-foot-inner">
                 <div class="cart-foot-l">
                   <div class="item-all-check">
-                    <a href="javascipt:;">
-                          <span class="checkbox-btn item-check-btn">
+                    <a href="javascipt:;" @click="toggleCheckAll">
+                          <span class="checkbox-btn item-check-btn" :class="{'check':checkAllFlag}">
                               <svg class="icon icon-ok"><use xlink:href="#icon-ok"/></svg>
                           </span>
                       <span>Select all</span>
@@ -119,10 +119,10 @@
                 </div>
                 <div class="cart-foot-r">
                   <div class="item-total">
-                    Item total: <span class="total-price">500</span>
+                    Item total: <span class="total-price">{{totalPrice | currency('$')}}</span>
                   </div>
                   <div class="btn-wrap">
-                    <a class="btn btn--red">Checkout</a>
+                    <a class="btn btn--red" :class="{'btn--dis':checkedCount==0}" @click="checkOut">Checkout</a>
                   </div>
                 </div>
               </div>
@@ -181,6 +181,27 @@
         mounted(){
             this.init();
         },
+        computed:{
+            checkAllFlag(){
+              return this.checkedCount == this.cartList.length;
+            },
+            checkedCount(){
+              let i =0;
+              this.cartList.forEach((item)=>{
+                if(item.checked=='1') i++;
+              })
+              return i;
+            },
+            totalPrice(){
+              let money =0;
+              this.cartList.forEach((item)=>{
+                if(item.checked=='1') {
+                  money += parseFloat(item.salePrice)*parseInt(item.productNum);
+                };
+              })
+              return money;
+            }
+        },
         components:{
             NavHeader,
             NavFooter,
@@ -215,19 +236,43 @@
             editCart(flag,item) {
                 if (flag=='add') {
                   item.productNum++
-                }else {
+                }else if(flag=='minu') {
                   if (item.productNum <= 1){
                     return;
                   }
                   item.productNum--;
+                }else{
+                    item.checked= item.checked=='1'? '0': '1';
                 }
                 axios.post("/users/cartEdit", {
                   productId:item.productId,
-                  productNum:item.productNum
+                  productNum:item.productNum,
+                  checked: item.checked
                 }).then((response)=>{
                   let res = response.data;
                 })
-            }
+            },
+            toggleCheckAll(){
+                let flag = !this.checkAllFlag;
+                this.cartList.forEach((item)=>{
+                  item.checked = flag;
+                });
+                axios.post("/users/editCheckAll", {
+                  checkAll:flag
+                }).then((response)=>{
+                  let res = response.data;
+                  if(res.status=='0'){
+                    console.log('update suc');
+                  }
+                })
+            },
+            checkOut(){
+               if (this.checkedCount>0){
+                 this.$router.push({
+                   path: "/address"
+                 });
+               }
+            },
         }
     }
 </script>
