@@ -19,3 +19,10 @@ npm run build --report
 ```
 
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+
+
+# start mongodb in dev env
+mongod -f /mongod/etc/mongo.conf
+
+# start nodejs server
+node server/bin/www      # execute in project root path
